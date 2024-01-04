@@ -1,36 +1,29 @@
-const { MongoClient } = require('mongodb');
 
-const uri = 'mongodb+srv://user_kcE:wangck2121@cluster0.o6j85dg.mongodb.net/?retryWrites=true&w=majority';
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-let db;
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://user_kcE:wangck2121@cluster0.o6j85dg.mongodb.net/?retryWrites=true&w=majority";
 
-exports.handler = async function(event, context) {
-  if (!db) {
-    await client.connect();
-    db = client.db();
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
   }
+});
 
-  // 在这里执行 Twikoo 相关的操作，包括读取和写入评论数据
-
-  // 示例：读取评论数据
-  const comments = await db.collection('comments').find().toArray();
-
-  // 示例：写入评论数据
-  const newComment = { name: 'John', content: 'This is a new comment!' };
-  await db.collection('comments').insertOne(newComment);
-
-  // 返回适当的响应
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ message: 'Twikoo handler executed successfully' })
-  };
-};
-
-{
-  "engines": {
-    "node": "14.x"
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
   }
 }
+run().catch(console.dir);
+
 
 exports.handler = require('twikoo-netlify').handler;
