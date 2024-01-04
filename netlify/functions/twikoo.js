@@ -33,5 +33,4 @@ exports.handler = async function(event, context) {
   }
 }
 
-
-exports.handler = require('twikoo-netlify').handler
+exports.handler = require('twikoo-netlify').handler;
