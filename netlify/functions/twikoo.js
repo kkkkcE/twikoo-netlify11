@@ -1,11 +1,12 @@
 
-const { MongoClient } = require('mongodb');
+
+import { MongoClient } from 'mongodb';
 
 const uri = mongodb+srv://user_kcE:wangck2121@cluster0.o6j85dg.mongodb.net/?retryWrites=true&w=majority;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 let db;
 
-exports.handler = async function(event, context) {
+export const handler = async function(event, context) {
   if (!db) {
     await client.connect();
     db = client.db();
@@ -27,6 +28,8 @@ exports.handler = async function(event, context) {
     body: JSON.stringify({ message: 'Twikoo handler executed successfully' })
   };
 };
+
+
 
 
 exports.handler = require('twikoo-netlify').handler
