@@ -27,6 +27,11 @@ exports.handler = async function(event, context) {
   };
 };
 
+{
+  "engines": {
+    "node": "14.x"
+  }
+}
 
 
 exports.handler = require('twikoo-netlify').handler
